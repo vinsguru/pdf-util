@@ -16,7 +16,7 @@ and build it using
     cd pdf-util/
     mvn clean install
     
-You can find the `pdfutil.jar` necessary to run the test suite install
+You can find the `pdfutil.jar` with all the dependencies
 
     pdf-util/target/pdfutil.jar
 
