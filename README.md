@@ -1,8 +1,27 @@
-# pdf-util
+# PDF Compare Utility
 
-PDF Compare Utility
+Getting `pdfutil.jar`
+====================
+
+Download this jar [here](http://www.testautomationguru.com/introducing-pdfutil-to-compare-pdf-files-extract-resources/).
+
+Or
+
+Obtain the source from
+
+    https://github.com/vinsguru/pdf-util/
+
+and build it using
+
+    cd pdf-util/
+    mvn clean install
+    
+You can find the `pdfutil.jar` necessary to run the test suite install
+
+    pdf-util/target/pdfutil.jar
 
 
+# Usage
 
 * To get page count
 
