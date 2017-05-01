@@ -55,7 +55,7 @@ public class PDFUtil {
 	private Color imgColor;
 	private boolean bCompareAllPages;
 	private CompareMode compareMode;
-	
+	private String[] excludePattern;
 	private int startPage = 1;
 	private int endPage = -1;
 	
@@ -243,6 +243,13 @@ public class PDFUtil {
 		doc.close();
 		return txt;
 	}
+	
+	
+	public void excludeText(String... regexs){
+		this.excludePattern = regexs;
+	}
+	
+	
    /**
    * Compares two given pdf documents.
    * 
@@ -301,6 +308,13 @@ public class PDFUtil {
 		
 		String file1Txt = this.getPDFText(file1, startPage, endPage).trim();
 		String file2Txt = this.getPDFText(file2, startPage, endPage).trim();
+		
+		if(null!=this.excludePattern && this.excludePattern.length>0){
+			for(int i=0; i<this.excludePattern.length; i++){
+				file1Txt = file1Txt.replaceAll(this.excludePattern[i], "");
+				file2Txt = file2Txt.replaceAll(this.excludePattern[i], "");
+			}
+		}
 		
 		logger.info("File 1 Txt : " + file1Txt);
 		logger.info("File 2 Txt : " + file2Txt);

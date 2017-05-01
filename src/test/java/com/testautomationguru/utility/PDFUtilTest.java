@@ -1,5 +1,6 @@
 package com.testautomationguru.utility;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -38,17 +39,40 @@ public class PDFUtilTest {
 		List<String> actualExtractedImages = pdfutil.savePdfAsImage(getFilePath("image-extract/sample.pdf"));
 		Assert.assertEquals(actualExtractedImages.size(), 6);		
 	}
+	
 
 	@Test(priority=5)
+	public void comparePDFTextModeDiff() throws IOException{
+		String file1 = getFilePath("text-compare/sample1.pdf");
+		String file2 = getFilePath("text-compare/sample2.pdf");
+		pdfutil.setCompareMode(CompareMode.TEXT_MODE);
+		
+		boolean result = pdfutil.compare(file1, file2);
+		Assert.assertFalse(result);
+	}	
+	
+	@Test(priority=6)
+	public void comparePDFTextModeSameAfterExcludePattern() throws IOException{
+		String file1 = getFilePath("text-compare/sample1.pdf");
+		String file2 = getFilePath("text-compare/sample2.pdf");
+		pdfutil.setCompareMode(CompareMode.TEXT_MODE);
+		pdfutil.excludeText("\\d+");
+		//pdfutil.excludeText("1999","1998");
+		boolean result = pdfutil.compare(file1, file2);
+		Assert.assertTrue(result);
+	}		
+
+	@Test(priority=7)
 	public void comparePDFImageModeSame() throws IOException{
 		String file1 = getFilePath("image-compare-same/sample1.pdf");
 		String file2 = getFilePath("image-compare-same/sample2.pdf");
 		pdfutil.setCompareMode(CompareMode.VISUAL_MODE);
+		
 		boolean result = pdfutil.compare(file1, file2);
 		Assert.assertTrue(result);
 	}
 
-	@Test(priority=6)
+	@Test(priority=8)
 	public void comparePDFImageModeDiff() throws IOException{
 		pdfutil.highlightPdfDifference(true);
 		String file1 = getFilePath("image-compare-diff/sample1.pdf");
@@ -57,7 +81,7 @@ public class PDFUtilTest {
 		Assert.assertFalse(result);
 	}
 
-	@Test(priority=7)
+	@Test(priority=9)
 	public void comparePDFImageModeDiffSpecificPage() throws IOException{
 		pdfutil.highlightPdfDifference(true);
 		String file1 = getFilePath("image-compare-diff/sample1.pdf");

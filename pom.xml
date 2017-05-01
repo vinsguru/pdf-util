@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>com.testautomationguru.pdfutil</groupId>
    <artifactId>pdf-util</artifactId>
-   <version>0.0.1-SNAPSHOT</version>
+   <version>0.0.1</version>
    <name>PDF Utility</name>
    <description>PDF Compare Utility</description>
    <licenses>
@@ -16,17 +16,17 @@
       <dependency>
          <groupId>org.apache.pdfbox</groupId>
          <artifactId>pdfbox</artifactId>
-         <version>2.0.3</version>
+         <version>2.0.5</version>
       </dependency>
       <dependency>
          <groupId>org.apache.pdfbox</groupId>
          <artifactId>pdfbox-tools</artifactId>
-         <version>2.0.3</version>
+         <version>2.0.5</version>
       </dependency>
       <dependency>
          <groupId>org.testng</groupId>
          <artifactId>testng</artifactId>
-         <version>6.8</version>
+         <version>6.10</version>
          <scope>test</scope>
       </dependency>
       <dependency>
