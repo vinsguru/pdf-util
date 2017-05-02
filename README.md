@@ -1,24 +1,21 @@
 # PDF Compare Utility
 
+MVN Dependency:
+===============
+
+```
+<dependency>
+   <groupId>com.testautomationguru.pdfutil</groupId>
+   <artifactId>pdf-util</artifactId>
+   <version>0.0.1</version>
+</dependency>
+```
+
+
 Getting `pdfutil.jar`
 ====================
 
 Download this jar [here](http://www.testautomationguru.com/introducing-pdfutil-to-compare-pdf-files-extract-resources/).
-
-Or
-
-Obtain the source from
-
-    https://github.com/vinsguru/pdf-util/
-
-and build it using
-
-    cd pdf-util/
-    mvn clean install
-    
-You can find the `pdfutil.jar` with all the dependencies
-
-    pdf-util/target/pdfutil.jar
 
 
 # Usage
