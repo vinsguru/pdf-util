@@ -7,7 +7,7 @@ MVN Dependency:
 <dependency>
    <groupId>com.testautomationguru.pdfutil</groupId>
    <artifactId>pdf-util</artifactId>
-   <version>0.0.1</version>
+   <version>0.0.2</version>
 </dependency>
 ```
 
