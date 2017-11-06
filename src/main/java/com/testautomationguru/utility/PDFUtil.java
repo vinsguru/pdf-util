@@ -48,11 +48,12 @@ import org.apache.commons.io.FileUtils;
 
 public class PDFUtil {
 
-	static Logger logger = Logger.getLogger(PDFUtil.class.getName());
+	private final static Logger logger = Logger.getLogger(PDFUtil.class.getName());
 	private String imageDestinationPath;
 	private boolean bTrimWhiteSpace;
 	private boolean bHighlightPdfDifference;
 	private Color imgColor;
+	private PDFTextStripper stripper;
 	private boolean bCompareAllPages;
 	private CompareMode compareMode;
 	private String[] excludePattern;
@@ -164,6 +165,15 @@ public class PDFUtil {
 	public void compareAllPages(boolean flag){
 		this.bCompareAllPages = flag;
 	}	
+	
+   /**
+   * To modify the text extracting strategy using PDFTextStripper
+   * 
+   * @param stripper Stripper with user strategy
+   */   
+    public void useStripper(PDFTextStripper stripper){
+        this.stripper = stripper;
+    }   	
 				
    /**
    * Get the page count of the document.
@@ -227,13 +237,17 @@ public class PDFUtil {
 		logger.info("endPage : " + endPage);
 		
 		PDDocument doc = PDDocument.load(new File(file));
-		PDFTextStripper stripper = new PDFTextStripper();
+		
+		PDFTextStripper localStripper = new PDFTextStripper();
+		if(null!=this.stripper){
+		    localStripper = this.stripper;
+		}
 		
 		this.updateStartAndEndPages(file, startPage, endPage);
-		stripper.setStartPage(this.startPage);
-		stripper.setEndPage(this.endPage);
+		localStripper.setStartPage(this.startPage);
+		localStripper.setEndPage(this.endPage);
 		
-		String txt = stripper.getText(doc);
+		String txt = localStripper.getText(doc);
 		logger.info("PDF Text before trimming : " + txt);
 		if(this.bTrimWhiteSpace){
 			txt = txt.trim().replaceAll("\\s+", " ").trim();
@@ -577,9 +591,9 @@ public class PDFUtil {
 		}
 	}
 	
-	private boolean createFolder(String file) throws IOException{
-		FileUtils.deleteDirectory(new File(file));
-		return new File(file).mkdir();
+	private boolean createFolder(String dir) throws IOException{
+	    FileUtils.deleteDirectory(new File(dir));
+		return new File(dir).mkdir();
 	}
 	
 	private String getFileName(String file){
