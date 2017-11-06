@@ -1,24 +1,21 @@
 # PDF Compare Utility
 
+MVN Dependency:
+===============
+
+```
+<dependency>
+   <groupId>com.testautomationguru.pdfutil</groupId>
+   <artifactId>pdf-util</artifactId>
+   <version>0.0.2</version>
+</dependency>
+```
+
+
 Getting `pdfutil.jar`
 ====================
 
 Download this jar [here](http://www.testautomationguru.com/introducing-pdfutil-to-compare-pdf-files-extract-resources/).
-
-Or
-
-Obtain the source from
-
-    https://github.com/vinsguru/pdf-util/
-
-and build it using
-
-    cd pdf-util/
-    mvn clean install
-    
-You can find the `pdfutil.jar` with all the dependencies
-
-    pdf-util/target/pdfutil.jar
 
 
 # Usage
@@ -85,7 +82,29 @@ pdfUtil.compare(file1, file2, 3, 3);
 // compare the pages from 1 to 5
 pdfUtil.compare(file1, file2, 1, 5);
 ```
+* To exclude certain text while comparing PDF files in text mode
 
+```
+String file1="c:/files/doc1.pdf";
+String file1="c:/files/doc2.pdf";
+ 
+//pass all the possible texts to be removed before comparing
+pdfutil.excludeText("1998", "testautomation");
+ 
+//pass regex patterns to be removed before comparing
+// \\d+ removes all the numbers in the pdf before comparing
+pdfutil.excludeText("\\d+");
+ 
+// compares the pdf documents &amp; returns a boolean
+// true if both files have same content. false otherwise.
+pdfUtil.compare(file1, file2);
+ 
+// compare the 3rd page alone
+pdfUtil.compare(file1, file2, 3, 3);
+ 
+// compare the pages from 1 to 5
+pdfUtil.compare(file1, file2, 1, 5);
+```
 * To compare PDF files in Visual mode (slower – compares PDF documents pixel by pixel – highlights pdf difference & store the result as image)
 
 ```
