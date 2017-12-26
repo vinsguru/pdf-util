@@ -483,13 +483,14 @@ public class PDFUtil {
 					logger.info("Comparing Page No : " + (iPage+1));
 					BufferedImage image1 = pdfRenderer1.renderImageWithDPI(iPage, 300, ImageType.RGB);
 					BufferedImage image2 = pdfRenderer2.renderImageWithDPI(iPage, 300, ImageType.RGB);
-					result = ImageUtil.compareAndHighlight(image1, image2, fileName, this.bHighlightPdfDifference, this.imgColor.getRGB()) && result;
+					result &= ImageUtil.compareAndHighlight(image1, image2, fileName, this.bHighlightPdfDifference, this.imgColor.getRGB());
 					if(!this.bCompareAllPages && !result){
 						break;
 					}
 				}
 		}catch (Exception e) {
 			e.printStackTrace();
+			result = false;
 		}finally{
 			doc1.close();
 			doc2.close();
