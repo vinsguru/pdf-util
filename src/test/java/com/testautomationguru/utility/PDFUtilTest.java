@@ -3,9 +3,7 @@ package com.testautomationguru.utility;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -13,7 +11,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.reporters.Files;
 
 public class PDFUtilTest {
 
