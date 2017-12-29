@@ -1,18 +1,23 @@
 package com.testautomationguru.utility;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
-import com.testautomationguru.utility.PDFUtil;
-
 public class PDFUtilTest {
 
+    private static final Charset TEXT_RESOURCE_CHARSET = Charset.forName("UTF-8");
     PDFUtil pdfutil = new PDFUtil();
 
     @Test(priority = 1)
@@ -24,14 +29,14 @@ public class PDFUtilTest {
     @Test(priority = 2)
     public void checkForFileContent() throws IOException {
         String actual = pdfutil.getText(getFilePath("text-extract/sample.pdf"));
-        String expected = Files.readFile(new File(getFilePath("text-extract/expected.txt")));
+        String expected = getTextResource("text-extract/expected.txt");
         Assert.assertEquals(actual.trim(), expected.trim());
     }
 
     @Test(priority = 3)
     public void checkForFileContentUsingStripper() throws IOException {
         String actual = pdfutil.getText(getFilePath("text-extract-position/sample.pdf"));
-        String expected = Files.readFile(new File(getFilePath("text-extract-position/expected.txt")));
+        String expected = getTextResource("text-extract-position/expected.txt");
         Assert.assertNotEquals(actual.trim(), expected.trim());
         
         //should match with stripper
@@ -39,7 +44,7 @@ public class PDFUtilTest {
         stripper.setSortByPosition(true);
         pdfutil.useStripper(stripper);
         actual = pdfutil.getText(getFilePath("text-extract-position/sample.pdf"));
-        expected = Files.readFile(new File(getFilePath("text-extract-position/expected.txt")));
+        expected = getTextResource("text-extract-position/expected.txt");
         Assert.assertEquals(actual.trim(), expected.trim());
         pdfutil.useStripper(null);   
     }
@@ -103,6 +108,14 @@ public class PDFUtilTest {
         String file2 = getFilePath("image-compare-diff/sample2.pdf");
         boolean result = pdfutil.compare(file1, file2, 3);
         Assert.assertTrue(result);
+    }
+
+    private String getTextResource(String resourceName) throws IOException {
+        try(FileInputStream fis = new FileInputStream(getFilePath(resourceName));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            IOUtils.copy(fis, baos);
+            return new String(baos.toByteArray(), TEXT_RESOURCE_CHARSET);
+        }
     }
 
     private String getFilePath(String filename) {
