@@ -9,6 +9,9 @@ import javax.imageio.ImageIO;
 
 class ImageUtil {
 	
+	private ImageUtil() {
+	}
+	
 	static Logger logger = Logger.getLogger(ImageUtil.class.getName());
 	
 	static boolean compareAndHighlight(final BufferedImage img1, final BufferedImage img2, String fileName, boolean highlight, int colorCode) throws IOException {
