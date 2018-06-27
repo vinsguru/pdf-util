@@ -443,9 +443,9 @@ public class PDFUtil {
 		
 		int pgCount1 = this.getPageCount(file1);
 		int pgCount2 = this.getPageCount(file2);
-		
-		if(pgCount1!=pgCount2){
-			logger.warning("files page counts do not match - returning false");
+
+		if(!isPartialComparisonPossible(pgCount1, pgCount2, endPage)){
+			logger.warning("partial comparison not possible - returning false");
 			return false;
 		}
 		
@@ -457,6 +457,23 @@ public class PDFUtil {
 		return this.convertToImageAndCompare(file1, file2, this.startPage, this.endPage);
 	}	
 	
+
+	private boolean isPartialComparisonPossible(int pageCountFile1, int pageCountFile2, int endPage) {
+
+		if (pageCountFile1 != pageCountFile2) {
+			logger.warning("files page counts do not match");
+			boolean isPartialComparisonPossible = pageCountFile1 >= endPage && pageCountFile2 >= endPage;
+			if (isPartialComparisonPossible) {
+				logger.warning("partial comparison possible");
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+
 	private boolean convertToImageAndCompare(String file1, String file2, int startPage, int endPage) throws IOException{
 		
 		boolean result = true;
