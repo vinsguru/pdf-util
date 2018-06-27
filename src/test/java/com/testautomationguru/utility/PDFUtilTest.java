@@ -105,6 +105,26 @@ public class PDFUtilTest {
         Assert.assertTrue(result);
     }
 
+    @Test(priority = 11)
+    public void comparePDFImageModePartial() throws IOException {
+        String file1 = getFilePath("image-compare-partial/sample1.pdf");
+        String file2 = getFilePath("image-compare-partial/sample2.pdf");
+        pdfutil.setCompareMode(CompareMode.VISUAL_MODE);
+
+        boolean result = pdfutil.compare(file1, file2, 1, 1);
+        Assert.assertTrue(result);
+    }
+
+    @Test(priority = 12)
+    public void comparePDFImageModePartialNotPossible() throws IOException {
+        String file1 = getFilePath("image-compare-partial/sample1.pdf");
+        String file2 = getFilePath("image-compare-partial/sample2.pdf");
+        pdfutil.setCompareMode(CompareMode.VISUAL_MODE);
+
+        boolean result = pdfutil.compare(file1, file2, 1, 2);
+        Assert.assertFalse(result);
+    }
+
     private String getFilePath(String filename) {
         return new File(getClass().getClassLoader().getResource(filename).getFile()).getAbsolutePath();
     }
