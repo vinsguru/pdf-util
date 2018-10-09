@@ -301,6 +301,11 @@ public class PDFUtil {
         return this.comparePdfFiles(file1, file2, startPage, endPage);
     }
 
+
+    public boolean compare(String file1, String file2, int startPage, int endPage , boolean ignorePageCount) throws IOException {
+        return this.comparePdfFiles(file1, file2, startPage, endPage, ignorePageCount);
+    }
+
     /**
      * Compares two given pdf documents.
      * <p>
