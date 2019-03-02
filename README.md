@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/PabloNicolasDiaz/pdf-util.svg?branch=master)](https://travis-ci.org/PabloNicolasDiaz/pdf-util)
+
 # PDF Compare Utility
 
 MVN Dependency:

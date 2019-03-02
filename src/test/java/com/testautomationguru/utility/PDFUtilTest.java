@@ -13,7 +13,7 @@ import com.testautomationguru.utility.PDFUtil;
 
 public class PDFUtilTest {
 
-    PDFUtil pdfutil = new PDFUtil();
+    private PDFUtil pdfutil = new PDFUtil();
 
     @Test(priority = 1)
     public void checkForPDFPageCount() throws IOException {
