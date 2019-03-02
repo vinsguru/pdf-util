@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.testautomationguru.pdfutil</groupId>
 	<artifactId>pdf-util</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>PDF Utility</name>
 	<description>PDF Compare Utility</description>
 	<properties>
