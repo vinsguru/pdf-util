@@ -3,11 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.testautomationguru.pdfutil</groupId>
+	<groupId>io.github.pablonicolasdiaz</groupId>
 	<artifactId>pdf-util</artifactId>
 	<version>0.0.4-SNAPSHOT</version>
 	<name>PDF Utility</name>
-	<description>PDF Compare Utility</description>
+	<description>PDF Compare Utility - Pablo Nicolas Diaz Fork</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
@@ -16,13 +16,30 @@
 		<org.testng.version>6.14.3</org.testng.version>
 		<commons-io.version>2.6</commons-io.version>
 		<org.projectlombok.lombok.version>1.18.6</org.projectlombok.lombok.version>
+		<!-- plugins -->
+		<org.apache.maven.plugins.maven-compiler-plugin.version>3.8.0</org.apache.maven.plugins.maven-compiler-plugin.version>
 	</properties>
+	<scm>
+        <connection>scm:git:git@github.com:PabloNicolasDiaz/pdf-util.git</connection>
+        <developerConnection>scm:git:git@github.com:PabloNicolasDiaz/pdf-util.git</developerConnection>
+        <url>https://github.com/PabloNicolasDiaz/pdf-util.git</url>
+        <tag>HEAD</tag>
+    </scm>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/PabloNicolasDiaz/pdf-util/issues</url>
+	</issueManagement>
+	<developers>
+		<developer>
+			<name>Pablo Nicolas Diaz</name>
+		</developer>
+	</developers>
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -58,9 +75,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
-				<configuration>
-				</configuration>
+				<version>${org.apache.maven.plugins.maven-compiler-plugin.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
