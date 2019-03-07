@@ -1,6 +1,7 @@
+# PDF Compare Utility
+
 [![Build Status](https://travis-ci.org/PabloNicolasDiaz/pdf-util.svg?branch=master)](https://travis-ci.org/PabloNicolasDiaz/pdf-util)
 [![DepShield Badge](https://depshield.sonatype.org/badges/PabloNicolasDiaz/pdf-util/depshield.svg)](https://depshield.github.io)
-# PDF Compare Utility
 
 MVN Dependency:
 ===============
