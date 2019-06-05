@@ -478,7 +478,7 @@ public class PDFUtil {
 				
 				for(int iPage=startPage-1;iPage<endPage;iPage++){
 					String fileName = new File(file1).getName().replace(".pdf", "_") + (iPage + 1);
-					fileName = this.getImageDestinationPath() + "/" + fileName + "_diff.png";
+					fileName = this.getImageDestinationPath() + File.separator + fileName + "_diff.png";
 					
 					logger.info("Comparing Page No : " + (iPage+1));
 					BufferedImage image1 = pdfRenderer1.renderImageWithDPI(iPage, 300, ImageType.RGB);
