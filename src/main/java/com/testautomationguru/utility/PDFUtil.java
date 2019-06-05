@@ -585,7 +585,7 @@ public class PDFUtil {
 	private void createImageDestinationDirectory(String file) throws IOException{
 		if(null==this.imageDestinationPath){
 			File sourceFile = new File(file);
-			String destinationDir = sourceFile.getParent() + "/temp/";
+			String destinationDir = sourceFile.getParent() + File.separator + "temp";
 			this.imageDestinationPath=destinationDir;
 			this.createFolder(destinationDir);
 		}
