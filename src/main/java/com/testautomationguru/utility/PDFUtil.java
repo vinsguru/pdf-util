@@ -488,7 +488,7 @@ public class PDFUtil {
 					BufferedImage image2 = pdfRenderer2.renderImageWithDPI(iPage, 300, ImageType.RGB);
 					result = ImageUtil.compareAndHighlight(image1, image2, fileName, this.bHighlightPdfDifference, this.imgColor.getRGB()) && result;
 					if(!this.bCompareAllPages && !result){
-						//break;
+						break;
 					}
 				}
 		}catch (Exception e) {
