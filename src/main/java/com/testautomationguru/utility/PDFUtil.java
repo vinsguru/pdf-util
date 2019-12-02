@@ -59,7 +59,7 @@ public class PDFUtil {
 	private String[] excludePattern;
 	private int startPage = 1;
 	private int endPage = -1;
-	
+
 	/*
 	 * Constructor
 	 */
@@ -310,6 +310,9 @@ public class PDFUtil {
 	public boolean compare(String file1, String file2, int startPage) throws IOException{
 		return this.comparePdfFiles(file1, file2, startPage, -1);
 	}
+	public boolean compare(String file1, String file2) throws IOException{
+		return this.comparePdfFiles(file1, file2, -1, -1);
+	}
 	
 	private boolean comparePdfFiles(String file1, String file2, int startPage, int endPage)throws IOException{
 		if(CompareMode.TEXT_MODE==this.compareMode)
@@ -339,7 +342,7 @@ public class PDFUtil {
 			logger.warning("PDF content does not match");
 		}
 		
-		return result; 
+		return result;
 	}
 	
    /**
@@ -455,7 +458,7 @@ public class PDFUtil {
 		this.updateStartAndEndPages(file1, startPage, endPage);		
 		
 		return this.convertToImageAndCompare(file1, file2, this.startPage, this.endPage);
-	}	
+	}
 	
 	private boolean convertToImageAndCompare(String file1, String file2, int startPage, int endPage) throws IOException{
 		
@@ -485,7 +488,7 @@ public class PDFUtil {
 					BufferedImage image2 = pdfRenderer2.renderImageWithDPI(iPage, 300, ImageType.RGB);
 					result = ImageUtil.compareAndHighlight(image1, image2, fileName, this.bHighlightPdfDifference, this.imgColor.getRGB()) && result;
 					if(!this.bCompareAllPages && !result){
-						break;
+						//break;
 					}
 				}
 		}catch (Exception e) {
@@ -495,6 +498,53 @@ public class PDFUtil {
 			doc2.close();
 		}
 		return result;  	
+	}
+
+	//Does check for all pages, not stop after first mismatch and check if it is a mismatch or a shift of the texts
+	private boolean convertToImageAndCompare(String file1, String file2, int startPage, int endPage, boolean shiftCheck) throws IOException{
+
+		boolean result = true;
+
+		PDDocument doc1=null;
+		PDDocument doc2=null;
+
+		PDFRenderer pdfRenderer1 = null;
+		PDFRenderer pdfRenderer2 = null;
+
+		try {
+
+			doc1 = PDDocument.load(new File(file1));
+			doc2 = PDDocument.load(new File(file2));
+
+
+			pdfRenderer1 = new PDFRenderer(doc1);
+			pdfRenderer2 = new PDFRenderer(doc2);
+
+
+			for(int iPage=startPage-1;iPage<endPage;iPage++){
+
+				String fileName = new File(file1).getName().replace(".pdf", "_") + (iPage + 1);
+				fileName = this.getImageDestinationPath() + "/" + fileName + "_diff.png";
+
+				logger.info("Comparing Page No : " + (iPage+1));
+				BufferedImage image1 = pdfRenderer1.renderImageWithDPI(iPage, 300, ImageType.RGB);
+				BufferedImage image2 = pdfRenderer2.renderImageWithDPI(iPage, 300, ImageType.RGB);
+				if(shiftCheck){
+					result = ImageUtil.compareAndHighlightWithShiftCheck(image1, image2, fileName, this.bHighlightPdfDifference, this.imgColor.getRGB()) && result;
+				} else {
+					result = ImageUtil.compareAndHighlight(image1, image2, fileName, this.bHighlightPdfDifference, this.imgColor.getRGB()) && result;
+				}
+				if(!this.bCompareAllPages && !result){
+
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			doc1.close();
+			doc2.close();
+		}
+		return result;
 	}
 	
 
