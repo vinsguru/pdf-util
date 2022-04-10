@@ -2,16 +2,20 @@ package com.testautomationguru.utility;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-class ImageUtil {
-	
+public class ImageUtil {
+
+
+	private ImageUtil() {
+	    throw new IllegalStateException("Utility class");
+	}
 	static Logger logger = Logger.getLogger(ImageUtil.class.getName());
-	
-	static boolean compareAndHighlight(final BufferedImage img1, final BufferedImage img2, String fileName, boolean highlight, int colorCode) throws IOException {
+
+	static boolean compareAndHighlight(final BufferedImage img1, final BufferedImage img2, String fileName, boolean highlight, int colorCode)
+    {
 
 	    final int w = img1.getWidth();
 	    final int h = img1.getHeight();
@@ -24,7 +28,7 @@ class ImageUtil {
 	    	    for (int i = 0; i < p1.length; i++) {
 	    	        if (p1[i] != p2[i]){
 	    	            p1[i] = colorCode;
-	    	        } 
+	    	        }
 	    	    }
 	    	    final BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 	    	    out.setRGB(0, 0, w, h, p1, 0, w);
@@ -38,9 +42,9 @@ class ImageUtil {
 	static void saveImage(BufferedImage image, String file){
 		try{
 			File outputfile = new File(file);
-			ImageIO.write(image, "png", outputfile);	
+			ImageIO.write(image, "png", outputfile);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}	
+	}
 }
