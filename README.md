@@ -20,6 +20,7 @@ Requires maven.
 
 ```
 git clone https://github.com/jwatchdog/pdf-util.git
+cd pdf-util
 mvn package
 ```
 
