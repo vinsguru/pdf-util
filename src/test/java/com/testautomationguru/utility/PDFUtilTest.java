@@ -9,8 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.reporters.Files;
 
-import com.testautomationguru.utility.PDFUtil;
-
 public class PDFUtilTest {
 
     PDFUtil pdfutil = new PDFUtil();
@@ -33,7 +31,7 @@ public class PDFUtilTest {
         String actual = pdfutil.getText(getFilePath("text-extract-position/sample.pdf"));
         String expected = Files.readFile(new File(getFilePath("text-extract-position/expected.txt")));
         Assert.assertNotEquals(actual.trim(), expected.trim());
-        
+
         //should match with stripper
         PDFTextStripper stripper = new PDFTextStripper();
         stripper.setSortByPosition(true);
@@ -41,7 +39,7 @@ public class PDFUtilTest {
         actual = pdfutil.getText(getFilePath("text-extract-position/sample.pdf"));
         expected = Files.readFile(new File(getFilePath("text-extract-position/expected.txt")));
         Assert.assertEquals(actual.trim(), expected.trim());
-        pdfutil.useStripper(null);   
+        pdfutil.useStripper(null);
     }
 
     @Test(priority = 4)
