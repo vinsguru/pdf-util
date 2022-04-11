@@ -29,9 +29,12 @@ import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
@@ -61,6 +64,7 @@ public class PDFUtil {
     private String[] excludePattern;
     private int startPage = 1;
     private int endPage = -1;
+    private boolean bSavePDF;
 
     /*
      * Constructor
@@ -70,9 +74,10 @@ public class PDFUtil {
         this.bTrimWhiteSpace = true;
         this.bHighlightPdfDifference = false;
         this.imgColor = Color.MAGENTA;
-        this.bCompareAllPages = false;
+        this.bCompareAllPages = true;
+        this.bSavePDF = false;
         this.compareMode = CompareMode.TEXT_MODE;
-        logger.setLevel(Level.OFF);
+        logger.setLevel(Level.WARNING);
         System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
     }
 
@@ -149,6 +154,10 @@ public class PDFUtil {
      */
     public void highlightPdfDifference(boolean flag) {
         this.bHighlightPdfDifference = flag;
+    }
+
+    public void savePDF(boolean flag) {
+    	this.bSavePDF = flag;
     }
 
     /**
@@ -450,7 +459,7 @@ public class PDFUtil {
      * @param startPage                 Starting page number of the document
      * @param endPage                   Ending page number of the document
      * @param highlightImageDifferences To highlight differences in the images
-     * @param showAllDifferences        To compare all the pages of the PDF (by default as soon as a mismatch is found in a page, this method exits)
+     * @param showAllDifferences        To compare all the pages of the PDF (by default this method processes all pages, to stop as soon as a difference is found, set to false)
      * @return boolean true if matches, false otherwise
      * @throws java.io.IOException when file is not found.
      */
@@ -489,8 +498,14 @@ public class PDFUtil {
             this.createImageDestinationDirectory(file2);
 
         this.updateStartAndEndPages(file1, startPage, endPage);
-
-        return this.convertToImageAndCompare(file1, file2, this.startPage, this.endPage);
+        if (this.bSavePDF)
+        {
+        	return this.convertToImageCompareAndSavePDF(file1, file2, this.startPage, this.endPage);
+        }
+        else
+        {
+          return this.convertToImageAndCompare(file1, file2, this.startPage, this.endPage);
+        }
     }
 
     private boolean comparePdfByImage(String file1, String file2, int startPage, int endPage, boolean ignorePageCount) throws IOException {
@@ -548,6 +563,62 @@ public class PDFUtil {
         } finally {
             doc1.close();
             doc2.close();
+        }
+        return result;
+    }
+
+    private boolean convertToImageCompareAndSavePDF(String file1, String file2, int startPage, int endPage) throws IOException {
+        boolean result = true;
+
+        PDDocument doc1 = null;
+        PDDocument doc2 = null;
+        PDDocument doc3 = null;
+
+        PDFRenderer pdfRenderer1 = null;
+        PDFRenderer pdfRenderer2 = null;
+
+        String fileName = new File(file1).getName().replace(".pdf", "_diff.pdf");
+
+        try {
+
+            doc1 = PDDocument.load(new File(file1));
+            doc2 = PDDocument.load(new File(file2));
+            doc3 = PDDocument.load(new File(file1));
+
+
+            pdfRenderer1 = new PDFRenderer(doc1);
+            pdfRenderer2 = new PDFRenderer(doc2);
+
+
+            for (int iPage = startPage - 1; iPage < endPage; iPage++) {
+
+                logger.info("Comparing Page No : " + (iPage + 1));
+                BufferedImage image1 = pdfRenderer1.renderImageWithDPI(iPage, 300, ImageType.RGB);
+                BufferedImage image2 = pdfRenderer2.renderImageWithDPI(iPage, 300, ImageType.RGB);
+                byte[] image3 = ImageUtil.compareAndHighlight(image1, image2, this.bHighlightPdfDifference, this.imgColor.getRGB());
+
+                result = (image3.length == 0 );
+
+                if (this.bCompareAllPages && !result) {
+                	logger.warning("Replacing page " + iPage);
+                	PDPage page = doc3.getPage(iPage);
+
+                	PDPageContentStream contents = new PDPageContentStream(doc3, page, PDPageContentStream.AppendMode.OVERWRITE, false, true);
+                	PDImageXObject img = PDImageXObject.createFromByteArray(doc3, image3, iPage + "_png");
+                	contents.drawImage(img, page.getMediaBox().getLowerLeftX(), page.getMediaBox().getLowerLeftY(), page.getMediaBox().getWidth(), page.getMediaBox().getHeight());
+                	contents.close();
+                }
+                if (!this.bCompareAllPages && !result) {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            doc1.close();
+            doc2.close();
+            doc3.save(fileName);
+            doc3.close();
         }
         return result;
     }

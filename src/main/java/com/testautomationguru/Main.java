@@ -21,7 +21,11 @@ public final class Main {
 
 			if(args.length>2){
 				pdfutil.highlightPdfDifference(true);
+
 				pdfutil.setImageDestinationPath(args[2]);
+				if(args.length>3 && "true".equals(args[3])){
+				pdfutil.savePDF(true);
+				}
 			}
 
 			pdfutil.compare(args[0], args[1]);
@@ -30,6 +34,8 @@ public final class Main {
 	}
 
 	private static void showUsage(){
-		System.out.println("Usage: java -jar pdf-util.jar file1.pdf file2.pdf [Optional:image-destination-path]");
+		System.out.println("Usage: java -jar pdf-util.jar file1.pdf file2.pdf [Optional:image-destination-path [Optional:create-pdf-instead]]\n"
+				+ "image-destination-path - path to output directory\n"
+				+ "create-pdf-instead - if set to 'true' generates a PDF instead of png's, png for any other value, requires image-destination-path to be set");
 	}
 }
